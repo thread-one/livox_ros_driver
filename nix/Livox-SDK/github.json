@@ -1,8 +1,8 @@
 {
-  "owner": "Livox-SDK",
+  "owner": "ahmed-elsaharti",
   "repo": "Livox-SDK",
-  "branch": "master",
+  "branch": "ae/test-legacy-fixes",
   "private": false,
-  "rev": "7cf759a760ac674b7032c48b46ef8aaadab90383",
-  "sha256": "1npy2wqcs9d194pcxgwy0m18i0wv2g9g0lw801psh93cg2n9njzg"
+  "rev": "e675b9b9b2a754e3a0fdd74c70e953c4d019f759",
+  "sha256": "17hc5l0i6ajjw92yjmcf4hgn36800w6v4z79iiqy1w4icp14jqik"
 }
