@@ -1,8 +1,8 @@
 {
-  "owner": "ahmed-elsaharti",
+  "owner": "Airtonomy",
   "repo": "Livox-SDK",
-  "branch": "ae/test-legacy-fixes",
+  "branch": "ae/fix-compilation",
   "private": false,
-  "rev": "e675b9b9b2a754e3a0fdd74c70e953c4d019f759",
-  "sha256": "17hc5l0i6ajjw92yjmcf4hgn36800w6v4z79iiqy1w4icp14jqik"
+  "rev": "32e1612ad1670a5a510290626f26915535e72f8f",
+  "sha256": "19hawp2al832wz55v2wfa7pwrw7dmpy0zkwbicyvmzc30ih5n3vx"
 }
