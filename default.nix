@@ -30,6 +30,14 @@ rec {
       rospy
       sensor-msgs
       std-msgs
+
+      pkgs.ffmpeg
+      pkgs.libusb
+      pkgs.eigen
+      pkgs.gtest
+      pkgs.xorg.libSM
+      pkgs.xorg.libX11
+      pkgs.xorg.libXt
     ];
     nativeBuildInputs = [ rosPkgs.catkin ];
 
