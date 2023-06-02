@@ -7,3 +7,7 @@ livox_ros_driver/Livox-SDK
 #nix
 result
 result-*
+livox_ros_driver/debian/
+livox_ros_driver/.obj-aarch64-linux-gnu/
+
+*.*deb
