@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>livox_ros_driver</name>
-  <version>2.0.0</version>
+  <!-- 0.0.0 needed for debian packaging find/replace (see edge-cli) -->
+  <version>0.0.0</version>
   <description>The ROS device driver for Livox 3D LiDARs and Livox Hub</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->

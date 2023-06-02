@@ -1,0 +1,99 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@2.2.0
+  cloudsmith: cloudsmith/cloudsmith@1.0.5
+
+jobs:
+  package:
+    machine:
+      image: ubuntu-2004:202101-01
+      docker_layer_caching: true
+    parameters:
+      source-path:
+        type: string
+        default: livox_ros_driver
+      docker-build-image:
+        type: string
+        default: docker.cloudsmith.io/thread-one/release/flight_controller:latest
+      package-repo-org:
+        type: string
+        default: thread-one
+      package-repo:
+        type: string
+        default: dev
+      package-format: 
+        type: string
+        default: deb
+      package-distribution:
+        type: string
+        default: ubuntu/focal
+      package-path:
+        type: string
+        default: debian/*.deb
+      resource_class:
+        description: The architecture and size of the machine
+        type: string
+    resource_class: << parameters.resource_class >>
+
+    steps:
+      - checkout
+      - docker/check:
+          registry:  docker.cloudsmith.io
+          docker-username: CLOUDSMITH_API_USER
+          docker-password: CLOUDSMITH_API_KEY
+      - cloudsmith/ensure-api-key
+      - docker/pull:
+          images: << parameters.docker-build-image >>
+      - run:
+          name: Build Debian Package
+          command: |
+            # calling make debian within the docker to build the package for deployment
+            VERSION=$(git describe --tags)
+            echo ==========================================================
+            echo running tests
+            echo ==========================================================
+            # run tests and copy results to current directory for store_test_results step (notice directory `test_results` must match)
+            docker run -v `pwd`:/workspace/src -w /workspace << parameters.docker-build-image >> /bin/bash -c "catkin_make;catkin_make run_tests;cp -r /workspace/build/test_results /workspace/src;catkin_test_results"
+
+            echo ==========================================================
+            echo build debian package
+            echo ==========================================================
+            docker run -v `pwd`:/workspace -w /workspace << parameters.docker-build-image >> /bin/bash -c "edge make debian --version=$VERSION --build=${CIRCLE_BUILD_NUM} --path='<< parameters.source-path >>'"
+
+
+      - cloudsmith/install-cli
+      - cloudsmith/publish:
+          cloudsmith-repository:  << parameters.package-repo-org >>/<< parameters.package-repo >>
+          package-format: << parameters.package-format >>
+          package-distribution: << parameters.package-distribution >>
+          package-path: << parameters.source-path >>/<< parameters.package-path >>
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: dist  
+workflows:
+  development:
+    jobs:
+      - package:
+          matrix:
+            parameters:
+              resource_class: [medium, arm.medium]
+          context:
+            - cloudsmith-creds     
+          filters:  
+            branches:
+              ignore: main
+  release:
+    jobs:
+      - package:
+          filters:  
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+          matrix:
+            parameters:
+              resource_class: [medium, arm.medium]
+          package-repo: "release"
+          context:
+            - cloudsmith-creds 
