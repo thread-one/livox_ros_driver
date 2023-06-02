@@ -11,7 +11,7 @@ jobs:
     parameters:
       source-path:
         type: string
-        default: .
+        default: livox_ros_driver
       docker-build-image:
         type: string
         default: docker.cloudsmith.io/thread-one/release/flight_controller:latest
